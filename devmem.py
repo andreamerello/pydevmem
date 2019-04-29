@@ -161,13 +161,11 @@ class DevMem:
         # Make reading easier (and faster... won't resolve dot in loops)
         mem = self.mem
 
-        # Compensate for the base_address not being what the user requested
-        offset += self.base_addr_offset
-
         # Check that the operation is going write to an aligned location
         if (offset & ~self.mask): raise AssertionError
 
-        # Seek to the aligned offset
+        # Compensate for the base_address not being what the user requested
+        # and then seek to the aligned offset.
         virt_base_addr = self.base_addr_offset & self.mask
         mem.seek(virt_base_addr + offset)
 
